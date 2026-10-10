@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+# Paramètres locaux d'Android Studio
+.idea/
