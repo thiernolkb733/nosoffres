@@ -25,4 +25,11 @@ interface ApplicationDao {
 
     @Query("UPDATE applications SET status = :status, dateApplied = CASE WHEN :status = 'Envoyée' THEN :sentDate ELSE dateApplied END, followUpDate = CASE WHEN :status = 'Envoyée' THEN :followUpDate ELSE '' END WHERE id = :id")
     suspend fun updateStatus(id: Long, status: String, sentDate: String, followUpDate: String)
+
+
+    @Query("DELETE FROM applications WHERE offerId = :offerId")
+    suspend fun deleteApplicationsForOffer(offerId: Long)
+
+    @Query("DELETE FROM applications")
+    suspend fun deleteAllApplications()
 }

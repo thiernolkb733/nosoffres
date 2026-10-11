@@ -7,7 +7,6 @@ import androidx.room.Update
 import com.example.mesoffres.data.model.Offer
 import kotlinx.coroutines.flow.Flow
 
-
 /**
  * DAO pour toutes les opérations concernant les offres.
  */
@@ -20,11 +19,20 @@ interface OfferDao {
     @Query("SELECT * FROM offers WHERE id = :id LIMIT 1")
     suspend fun getOfferById(id: Long): Offer?
 
+    // Insérer une nouvelle offre manuellement.
+    @Insert
+    suspend fun insertOffer(offer: Offer): Long
+
     @Insert
     suspend fun insertAll(offers: List<Offer>)
 
     @Update
     suspend fun update(offer: Offer)
+
+
+    @Query("DELETE FROM offers WHERE id = :offerId")
+    suspend fun deleteOfferById(offerId: Long)
+
 
     @Query("DELETE FROM offers")
     suspend fun deleteAll()

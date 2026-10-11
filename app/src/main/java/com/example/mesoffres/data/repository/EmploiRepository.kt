@@ -1,5 +1,6 @@
 package com.example.mesoffres.data.repository
 
+
 import android.content.Context
 import androidx.room.Room
 import com.example.mesoffres.data.local.AppDatabase
@@ -31,6 +32,8 @@ class EmploiRepository(context: Context) {
         "emploi_stages.db"
     ).addMigrations(MIGRATION_1_2).build()
 
+    private val appContext = context.applicationContext
+
     private val offerDao = database.offerDao()
     private val applicationDao = database.applicationDao()
     private val letterDao = database.letterDao()
@@ -47,6 +50,11 @@ class EmploiRepository(context: Context) {
 
     suspend fun getOffer(id: Long): Offer? =
         offerDao.getOfferById(id)
+
+    // Enregistrer une offre ajoutée manuellement.
+    suspend fun addOffer(offer: Offer): Long {
+        return offerDao.insertOffer(offer)
+    }
 
     suspend fun toggleFavorite(offer: Offer) {
         offerDao.update(
@@ -86,8 +94,27 @@ class EmploiRepository(context: Context) {
         letterDao.update(letter)
     }
 
+
     suspend fun seedDatabase() {
-        if (offerDao.getOfferById(1L) != null) return
+        val preferences = appContext.getSharedPreferences(
+            "mesoffres_preferences",
+            Context.MODE_PRIVATE
+        )
+
+        val seedCompleted = preferences.getBoolean(
+            "demo_data_seeded",
+            false
+        )
+
+        if (seedCompleted) return
+
+        // Si des offres existent déjà, on évite de réinsérer les données de démonstration.
+        if (offerDao.getOfferById(1L) != null) {
+            preferences.edit()
+                .putBoolean("demo_data_seeded", true)
+                .apply()
+            return
+        }
 
         val offers = listOf(
             Offer(
@@ -150,5 +177,27 @@ class EmploiRepository(context: Context) {
                 )
             )
         )
+
+        // On mémorise que l'initialisation a été effectuée.
+        preferences.edit()
+            .putBoolean("demo_data_seeded", true)
+            .apply()
     }
+
+
+
+    suspend fun deleteOffer(offerId: Long) {
+        applicationDao.deleteApplicationsForOffer(offerId)
+        offerDao.deleteOfferById(offerId)
+    }
+
+    suspend fun deleteAllOffers() {
+        applicationDao.deleteAllApplications()
+        offerDao.deleteAll()
+    }
+
+
+
+
+
 }
