@@ -1,5 +1,8 @@
 package com.example.mesoffres.ui.screens
 
+
+import androidx.compose.foundation.layout.statusBarsPadding
+
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -106,6 +109,7 @@ fun ApplyScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(ApplyOrange)
+                .statusBarsPadding()
                 .padding(end = 20.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

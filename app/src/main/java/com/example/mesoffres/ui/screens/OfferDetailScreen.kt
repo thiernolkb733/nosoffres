@@ -1,5 +1,6 @@
 package com.example.mesoffres.ui.screens
 
+import androidx.compose.foundation.layout.statusBarsPadding
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -57,7 +58,8 @@ fun OfferDetailScreen(
     offerId: Long,
     viewModel: EmploiViewModel,
     onBack: () -> Unit,
-    onApply: () -> Unit
+    onApply: () -> Unit,
+    onEdit: (Long) -> Unit
 ) {
     // La liste observée vient de Room via le ViewModel : un changement de favori est reflété ici.
     val offers by viewModel.offers.collectAsStateWithLifecycle()
@@ -74,7 +76,13 @@ fun OfferDetailScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(DetailOrange)
-                .padding(end = 20.dp, top = 12.dp, bottom = 12.dp),
+                .statusBarsPadding()
+                .padding(
+                    start = 0.dp,
+                    end = 20.dp,
+                    top = 8.dp,
+                    bottom = 8.dp
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
@@ -188,6 +196,18 @@ fun OfferDetailScreen(
                     .padding(horizontal = 22.dp, vertical = 14.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                OutlinedButton(
+                    onClick = { onEdit(offer.id) },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp)
+                ) {
+                    Text(
+                        text = "Modifier",
+                        color = Color.White
+                    )
+                }
+
                 OutlinedButton(
                     onClick = { viewModel.toggleFavorite(offer) },
                     modifier = Modifier

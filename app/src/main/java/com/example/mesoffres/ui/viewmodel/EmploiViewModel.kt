@@ -188,6 +188,34 @@ class EmploiViewModel(application: Application) : AndroidViewModel(application) 
     }
 
 
+    /**
+     * Modifie une offre existante et actualise son rappel.
+     */
+    fun updateOffer(
+        offer: Offer,
+        onSaved: () -> Unit = {},
+        onError: (Exception) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            try {
+                // Mettre à jour l'offre existante dans Room.
+                repository.updateOffer(offer)
+
+                // Actualiser le rappel lié à sa date limite.
+                OfferReminderManager.scheduleOfferDeadlineReminder(
+                    context = getApplication<Application>(),
+                    offer = offer
+                )
+
+                onSaved()
+            } catch (e: Exception) {
+                onError(e)
+            }
+        }
+    }
+
+
+
 
     /** Met à jour le texte utilisé par la liste des offres. */
     fun updateOfferSearchQuery(query: String) {

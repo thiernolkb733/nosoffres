@@ -56,6 +56,11 @@ class EmploiRepository(context: Context) {
         return offerDao.insertOffer(offer)
     }
 
+    // Modifier une offre existante.
+    suspend fun updateOffer(offer: Offer) {
+        offerDao.update(offer)
+    }
+
     suspend fun toggleFavorite(offer: Offer) {
         offerDao.update(
             offer.copy(isFavorite = !offer.isFavorite)

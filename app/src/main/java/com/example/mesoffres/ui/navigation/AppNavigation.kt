@@ -70,6 +70,25 @@ fun AppNavigation(viewModel: EmploiViewModel) {
             )
         }
 
+        composable(
+            route = Routes.EDIT_OFFER,
+            arguments = listOf(
+                navArgument("offerId") {
+                    type = NavType.LongType
+                }
+            )
+        ) { entry ->
+            val id = entry.arguments?.getLong("offerId")
+                ?: return@composable
+
+            AddOfferScreen(
+                viewModel = viewModel,
+                onBack = { navController.popBackStack() },
+                onSaved = { navController.popBackStack() },
+                offerId = id
+            )
+        }
+
 
         composable(
             route = Routes.OFFER_DETAIL,
@@ -84,7 +103,10 @@ fun AppNavigation(viewModel: EmploiViewModel) {
                 offerId = id,
                 viewModel = viewModel,
                 onBack = { navController.popBackStack() },
-                onApply = { navController.navigate(Routes.apply(id)) }
+                onApply = { navController.navigate(Routes.apply(id)) },
+                onEdit = { id ->
+                    navController.navigate(Routes.editOffer(id))
+                }
             )
         }
 

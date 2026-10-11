@@ -1,5 +1,10 @@
 package com.example.mesoffres.ui.screens
 
+
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.runtime.LaunchedEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +31,11 @@ import com.example.mesoffres.ui.viewmodel.EmploiViewModel
 fun AddOfferScreen(
     viewModel: EmploiViewModel,
     onBack: () -> Unit,
-    onSaved: () -> Unit
+    onSaved: () -> Unit,
+    offerId: Long? = null
 ) {
+    val offers by viewModel.offers.collectAsStateWithLifecycle()
+    val existingOffer = offers.firstOrNull { it.id == offerId }
     var title by remember { mutableStateOf("") }
     var company by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("Conakry") }
@@ -36,14 +44,32 @@ fun AddOfferScreen(
     var deadline by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var contact by remember { mutableStateOf("") }
+    LaunchedEffect(existingOffer) {
+        existingOffer?.let { offer ->
+            title = offer.title
+            company = offer.company
+            city = offer.city
+            type = offer.type
+            sector = offer.sector
+            deadline = offer.deadline
+            description = offer.description
+            contact = offer.contact
+        }
+    }
 
     var errorMessage by remember { mutableStateOf("") }
     var isSaving by remember { mutableStateOf(false) }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.safeDrawing,
         topBar = {
             TopAppBar(
-                title = { Text("Ajouter une offre") },
+                title = {
+                    Text(
+                        if (offerId == null) "Ajouter une offre"
+                        else "Modifier une offre"
+                    )
+                },
                 navigationIcon = {
                     TextButton(onClick = onBack) {
                         Text("Retour")
@@ -61,7 +87,11 @@ fun AddOfferScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Text(
-                text = "Enregistre une offre trouvée ailleurs.",
+                text = if (offerId == null) {
+                    "Enregistre une offre trouvée ailleurs."
+                } else {
+                    "Modifie les informations de cette offre."
+                },
                 style = MaterialTheme.typography.bodyMedium
             )
 
@@ -147,6 +177,7 @@ fun AddOfferScreen(
                     errorMessage = ""
 
                     val offer = Offer(
+                        id = existingOffer?.id ?: 0L,
                         title = title.trim(),
                         company = company.trim(),
                         city = city.trim(),
@@ -154,21 +185,37 @@ fun AddOfferScreen(
                         sector = sector.trim(),
                         deadline = deadline.trim(),
                         description = description.trim(),
-                        contact = contact.trim()
+                        contact = contact.trim(),
+                        isFavorite = existingOffer?.isFavorite ?: false
                     )
 
-                    viewModel.addOffer(
-                        offer = offer,
-                        onSaved = {
-                            isSaving = false
-                            onSaved()
-                        },
-                        onError = {
-                            isSaving = false
-                            errorMessage =
-                                "Impossible d'enregistrer l'offre."
-                        }
-                    )
+                    if (offerId == null) {
+                        // Mode ajout : créer une nouvelle offre.
+                        viewModel.addOffer(
+                            offer = offer,
+                            onSaved = {
+                                isSaving = false
+                                onSaved()
+                            },
+                            onError = {
+                                isSaving = false
+                                errorMessage = "Impossible d'enregistrer l'offre."
+                            }
+                        )
+                    } else {
+                        // Mode modification : mettre à jour l'offre existante.
+                        viewModel.updateOffer(
+                            offer = offer,
+                            onSaved = {
+                                isSaving = false
+                                onSaved()
+                            },
+                            onError = {
+                                isSaving = false
+                                errorMessage = "Impossible de modifier l'offre."
+                            }
+                        )
+                    }
                 },
                 enabled = !isSaving,
                 modifier = Modifier.fillMaxWidth()

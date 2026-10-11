@@ -10,6 +10,8 @@ object Routes {
     const val OFFERS = "offers"
 
     const val ADD_OFFER = "add_offer"
+
+    const val EDIT_OFFER = "edit_offer/{offerId}"
     const val OFFER_DETAIL = "offer_detail/{offerId}"
     const val APPLICATIONS = "applications"
     const val APPLY = "apply/{offerId}"
@@ -20,6 +22,8 @@ object Routes {
     const val FAVORITES = "favorites"
 
     fun offerDetail(id: Long) = "offer_detail/$id"
+
+    fun editOffer(id: Long) = "edit_offer/$id"
     fun apply(id: Long) = "apply/$id"
     fun letterDetail(id: Long) = "letter_detail/$id"
 }

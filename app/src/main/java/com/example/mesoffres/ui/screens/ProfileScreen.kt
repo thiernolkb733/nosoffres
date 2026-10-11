@@ -1,5 +1,8 @@
 package com.example.mesoffres.ui.screens
 
+
+import androidx.compose.foundation.layout.statusBarsPadding
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,16 +56,23 @@ fun ProfileScreen(
             .fillMaxSize()
             .background(ProfileBackground)
     ) {
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(ProfileOrange)
+                .statusBarsPadding()
                 .padding(end = 20.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Retour", tint = Color.White)
+                Icon(
+                    Icons.Default.ArrowBack,
+                    contentDescription = "Retour",
+                    tint = Color.White
+                )
             }
+
             Text(
                 text = "Mon profil",
                 style = MaterialTheme.typography.headlineSmall,
@@ -70,6 +80,7 @@ fun ProfileScreen(
                 color = Color.White
             )
         }
+
 
         LazyColumn(
             modifier = Modifier.weight(1f),

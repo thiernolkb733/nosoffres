@@ -1,5 +1,8 @@
 package com.example.mesoffres.ui.screens
 
+
+import androidx.compose.foundation.layout.statusBarsPadding
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -54,6 +57,7 @@ fun FavoriteOffersScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(FavoritesOrange)
+                .statusBarsPadding()
                 .padding(end = 20.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

@@ -1,5 +1,7 @@
 package com.example.mesoffres.ui.screens
 
+
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -105,10 +107,13 @@ fun HomeScreen(
     ) {
         // Le bandeau reprend le titre orange de la maquette.
         Row(
+
             modifier = Modifier
                 .fillMaxWidth()
                 .background(DashboardOrange)
+                .statusBarsPadding()
                 .padding(start = 24.dp, end = 14.dp, top = 16.dp, bottom = 16.dp),
+
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
