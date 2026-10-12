@@ -49,9 +49,13 @@ Le projet est en cours de développement. Certaines fonctionnalités peuvent év
 
 ## 👨‍💻 Auteurs :
 
-**-Chef de projet et intégration : Thierno Mamadou Diallo
--Responsable données : Amadou Sadio Toure
--Responsable interface : Ibrahima Diallo
--Responsable logique et qualité : Djaka Keita**
+**-Chef de projet et intégration :
+Thierno Mamadou Diallo
+-Responsable données : 
+Amadou Sadio Toure
+-Responsable interface : 
+Ibrahima Diallo
+-Responsable logique et qualité :
+Djaka Keita**
 
 Dépôt GitHub : [nosoffres](https://github.com/thiernolkb733/nosoffres.git)
