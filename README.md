@@ -51,10 +51,13 @@ Le projet est en cours de développement. Certaines fonctionnalités peuvent év
 
 **-Chef de projet et intégration :
 Thierno Mamadou Diallo
+
 -Responsable données : 
 Amadou Sadio Toure
+
 -Responsable interface : 
 Ibrahima Diallo
+
 -Responsable logique et qualité :
 Djaka Keita**
 
